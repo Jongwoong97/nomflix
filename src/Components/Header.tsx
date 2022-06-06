@@ -130,7 +130,9 @@ function Header() {
   const { register, handleSubmit } = useForm<IForm>();
   const navigate = useNavigate();
   const onValid = (data: IForm) => {
-    navigate(`search?keyword=${data.keyword}`);
+    homeMatch
+      ? navigate(`search/?category=movies&keyword=${data.keyword}`)
+      : navigate(`search/?category=tvs&keyword=${data.keyword}`);
   };
   return (
     <Nav variants={navVariants} animate={navAnimation} initial="top">
@@ -154,7 +156,7 @@ function Header() {
             <Link to="/">Home {homeMatch && <Circle layoutId="circle" />}</Link>
           </Item>
           <Item>
-            <Link to="tv">
+            <Link to="/tv">
               TV Shows {tvMatch && <Circle layoutId="circle" />}
             </Link>
           </Item>
@@ -163,6 +165,7 @@ function Header() {
       <Col>
         <Search onSubmit={handleSubmit(onValid)}>
           <motion.svg
+            style={{ cursor: "pointer" }}
             onClick={toggleSearch}
             animate={{ x: searchOpen ? -225 : 0 }}
             transition={{ type: "linear" }}
